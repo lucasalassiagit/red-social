@@ -16,7 +16,11 @@ export const PostList = () => {
     const getPosts = async () => {
         setLoading(true);
         try {
-            const res = await axios.get("http://localhost:3000/posts");
+            const res = await axios.get("http://localhost:3000/posts", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            });
             setPosts(res.data);
             setError(null);
         } catch (err) {
@@ -33,14 +37,18 @@ export const PostList = () => {
     const handlePublicar = async (e) => {
         e.preventDefault();
         if (nuevoPost.trim().length === 0) return;
-        
+
         setPosting(true);
         try {
             await axios.post(`http://localhost:3000/posts`, {
                 content: nuevoPost,
                 userId: Number(id)
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             });
-            
+
             setNuevoPost("");
             await getPosts();
         } catch (err) {
@@ -159,8 +167,8 @@ export const PostList = () => {
                             </div>
                         ) : (
                             posts.map((post) => (
-                                <PostCard 
-                                    key={post.id} 
+                                <PostCard
+                                    key={post.id}
                                     post={post}
                                 />
                             ))

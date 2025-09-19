@@ -15,7 +15,11 @@ export default function Perfil() {
     const postsUsuario = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/posts/${Number(id)}`
+          `http://localhost:3000/posts/${Number(id)}`, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('token')}`
+            }
+          }
         );
         const data = res.data;
         setPosts(data);

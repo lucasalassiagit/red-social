@@ -15,6 +15,8 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
+
+@UseGuards(JwtAuthGuard)
 @ApiTags('posts')
 @Controller('posts')
 export class PostsController {

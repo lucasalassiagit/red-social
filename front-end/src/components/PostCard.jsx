@@ -20,7 +20,11 @@ export const PostCard = ({ post, onLike }) => {
     const handleLikeClick = async () => {
         try {
             const response = await axios.post(
-                `http://localhost:3000/likes/${post.id}/${id}`
+                `http://localhost:3000/likes/${post.id}/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
             );
             setIsLiked(response.data.liked);
             setLikesCount(prev => response.data.liked ? prev + 1 : prev - 1);
@@ -33,7 +37,11 @@ export const PostCard = ({ post, onLike }) => {
         const checkLikeStatus = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:3000/likes/${post.id}/${id}/check`
+                    `http://localhost:3000/likes/${post.id}/${id}/check`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
                 );
                 setIsLiked(response.data);
             } catch (err) {
@@ -52,7 +60,11 @@ export const PostCard = ({ post, onLike }) => {
         const getComentarios = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`http://localhost:3000/comments/${post.id}`);
+                const res = await axios.get(`http://localhost:3000/comments/${post.id}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                });
                 setComments(res.data);
                 setError(null);
             } catch (err) {
@@ -73,6 +85,10 @@ export const PostCard = ({ post, onLike }) => {
             const res = await axios.post(`http://localhost:3000/comments/${post.id}`, {
                 comments: nuevoCom,
                 userId: Number(id),
+            },{
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             });
             setNuevoCom("");
             setComments([...comments, res.data])
@@ -118,22 +134,21 @@ export const PostCard = ({ post, onLike }) => {
                 <div className="flex items-center justify-between mt-4">
                     <button
                         onClick={handleLikeClick}
-                        className={`flex items-center transition-colors ${
-                            isLiked 
-                                ? 'text-red-600 hover:text-red-700' 
+                        className={`flex items-center transition-colors ${isLiked
+                                ? 'text-red-600 hover:text-red-700'
                                 : 'text-gray-600 hover:text-red-600'
-                        }`}
+                            }`}
                     >
-                        <svg 
-                            className="w-5 h-5 mr-1" 
-                            fill={isLiked ? "currentColor" : "none"} 
-                            stroke="currentColor" 
+                        <svg
+                            className="w-5 h-5 mr-1"
+                            fill={isLiked ? "currentColor" : "none"}
+                            stroke="currentColor"
                             viewBox="0 0 24 24"
                         >
-                            <path 
-                                strokeLinecap="round" 
-                                strokeLinejoin="round" 
-                                strokeWidth={2} 
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
                                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                             />
                         </svg>

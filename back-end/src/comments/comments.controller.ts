@@ -3,7 +3,10 @@ import { CommentsService } from './comments.service';
 import { Get, Param } from '@nestjs/common';
 import { ComentarPostDto } from './dto/comentar-post.dto';
 import { ApiTags } from '@nestjs/swagger';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
+@UseGuards(JwtAuthGuard)
 @ApiTags('comments')
 @Controller('comments')
 export class CommentsController {

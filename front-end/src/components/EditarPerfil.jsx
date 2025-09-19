@@ -22,7 +22,7 @@ export const EditarPerfil = () => {
             return;
         }
 
-        if(name === localStorage.getItem('name')){
+        if (name === localStorage.getItem('name')) {
             setError("El nombre no puede ser igual al actual");
             return;
         }
@@ -30,6 +30,10 @@ export const EditarPerfil = () => {
         try {
             await axios.put(`http://localhost:3000/users/${id}`, {
                 name
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             });
             setSuccess("Nombre actualizado correctamente");
             localStorage.setItem('name', name);
@@ -39,7 +43,7 @@ export const EditarPerfil = () => {
         }
     }
 
-    
+
 
     const handleUsername = async (e) => {
         e.preventDefault();
@@ -50,22 +54,30 @@ export const EditarPerfil = () => {
             return;
         }
 
-        try{
+        try {
             const res = await axios.get(
-                `http://localhost:3000/users/buscar/username/${username}`
+                `http://localhost:3000/users/buscar/username/${username}`, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
+            }
             );
 
             if (res.data === true) {
                 setError("El nombre de usuario ya existe");
                 return;
             }
-        }catch(err){
+        } catch (err) {
             setError("Error al verificar el nombre de usuario");
         }
 
         try {
             await axios.put(`http://localhost:3000/users/${id}`, {
                 username
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             });
             setSuccess("Nombre de usuario actualizado correctamente");
             localStorage.setItem('username', username);
@@ -84,26 +96,35 @@ export const EditarPerfil = () => {
             return;
         }
 
-        if(email === localStorage.getItem('email')){
+        if (email === localStorage.getItem('email')) {
             setError("El correo electrónico no puede ser igual al actual");
             return;
         }
 
-        try{
+        try {
             const res = await axios.get(
-                `http://localhost:3000/users/buscar/email/${email}`
-            );  
+                `http://localhost:3000/users/buscar/email/${email}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            );
             if (res.data === true) {
                 setError("El correo electrónico ya existe");
                 return;
             }
-        }catch(err){
+        } catch (err) {
             setError("Error al verificar el correo electrónico");
         }
 
         try {
             await axios.put(`http://localhost:3000/users/${id}`, {
                 email
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             });
             setSuccess("Correo electrónico actualizado correctamente");
             localStorage.setItem('email', email);
@@ -125,6 +146,10 @@ export const EditarPerfil = () => {
             const res = await axios.post("http://localhost:3000/auth/VerificarPassword", {
                 username: localStorage.getItem('username'),
                 password: password
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
+                }
             });
             if (res.data === true && password !== newPassword) {
                 await axios.put(`http://localhost:3000/users/${id}`, {
@@ -134,9 +159,9 @@ export const EditarPerfil = () => {
                 setPassword("");
                 setNewPassword("");
             }
-            else if(password === newPassword){
+            else if (password === newPassword) {
                 setError("La nueva contraseña no puede ser igual a la actual");
-            } 
+            }
             else {
                 setError("La contraseña actual es incorrecta");
             }
@@ -179,7 +204,7 @@ export const EditarPerfil = () => {
                         </div>
                     </div>
                 )}
-                
+
                 {success && (
                     <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg mb-6">
                         <div className="flex items-center">
