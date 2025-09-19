@@ -3,6 +3,12 @@
 /node_modules
 /build
 
+# Migrations
+/src/migrations
+/migrations
+*.migration.ts
+*.migration.js
+
 # Logs
 logs
 *.log
